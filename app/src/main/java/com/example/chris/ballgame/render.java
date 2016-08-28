@@ -43,9 +43,9 @@ public class render extends View implements SensorEventListener {
 
     public void onSensorChanged(SensorEvent event) {
 
-        x -= event.values[0] * 10;
+        x -= event.values[0] * 1;
         y += event.values[1] * 10;
-        
+
     }
 
     @Override
