@@ -12,9 +12,10 @@ import android.view.View;
 
 public class render extends View implements SensorEventListener {
 
-    float x, y;
+    float x = 100, y = 100;
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    private int width = 0, height = 0;
 
     public render(Context context) {
         super(context);
@@ -23,7 +24,6 @@ public class render extends View implements SensorEventListener {
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-
     }
 
     @Override
@@ -31,20 +31,22 @@ public class render extends View implements SensorEventListener {
 
         Paint paint = new Paint();
 
+        width = canvas.getWidth();
+        height = canvas.getHeight();
+
         int blue = Color.BLUE;
         paint.setColor(blue);
 
         canvas.drawCircle(x,y,50,paint);
 
         invalidate();
-
     }
 
 
     public void onSensorChanged(SensorEvent event) {
 
-        x -= event.values[0] * 1;
-        y += event.values[1] * 10;
+        x -= event.values[0] * 4;
+        y += event.values[1] * 4;
 
     }
 
