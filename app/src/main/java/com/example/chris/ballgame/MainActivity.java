@@ -2,8 +2,6 @@ package com.example.chris.ballgame;
 
 import android.app.Activity;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 
@@ -16,7 +14,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(new render(this));
+        setContentView(new GameManager(this));
 
         /*
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
