@@ -11,12 +11,12 @@ import android.hardware.SensorManager;
 
 public class Ball implements SensorEventListener {
 
-    float x = 500, y = 500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, ball_size = 25, countx = 0, county=0, tempx, tempy;
+    float x = 500, y = 500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, ball_size = 35;
     private int width = 0, height = 0;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     Paint paint = new Paint();
-    int blue = Color.BLUE;
+    int blue = Color.GREEN;
 
     public Ball(Context context) {
         mSensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
