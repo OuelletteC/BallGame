@@ -1,11 +1,10 @@
 package com.example.chris.ballgame;
 
 import android.app.Activity;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
+import android.content.Intent;
 
 public class MainActivity extends Activity {
 
@@ -15,8 +14,15 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        Button b = (Button)findViewById(R.id.PlayButton);
-        setContentView(new GameManager(this));
+        Button playbutton = (Button)findViewById(R.id.PlayButton);
+
+        playbutton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                Intent nextScreen = new Intent(getApplicationContext(), GameActivity.class);
+                startActivity(nextScreen);
+            }
+        });
 
     }
 }

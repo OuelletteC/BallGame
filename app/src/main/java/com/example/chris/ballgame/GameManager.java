@@ -26,8 +26,8 @@ public class GameManager extends View {
 
         bgrnd.setBounds(0,0,canvas.getWidth(),canvas.getHeight());
         bgrnd.draw(canvas);
-        gumDrop.render(canvas);
         ball.render(canvas);
+        gumDrop.render(canvas);
 
         invalidate();
     }

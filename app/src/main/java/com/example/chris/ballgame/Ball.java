@@ -11,7 +11,7 @@ import android.hardware.SensorManager;
 
 public class Ball implements SensorEventListener {
 
-    float x = 500, y = 500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, ball_size = 35;
+    float x = 250, y = 300, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, ball_size = 35;
     private int width = 0, height = 0;
     private SensorManager mSensorManager;
     private Sensor mSensor;
@@ -21,7 +21,7 @@ public class Ball implements SensorEventListener {
     public Ball(Context context) {
         mSensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     public void render(Canvas canvas) {
