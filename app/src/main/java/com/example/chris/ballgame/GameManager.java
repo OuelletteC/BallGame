@@ -9,15 +9,18 @@ import android.graphics.drawable.Drawable;
 public class GameManager extends View {
 
     int red = Color.RED;
-    private GumDrop gumDrop;
-    private Ball ball;
     Drawable bgrnd = getResources().getDrawable(R.drawable.background);
+    private Map map1;
+    private Map map2;
+    private Map currentMap;
+
 
     public GameManager(Context context) {
         super(context);
-        gumDrop = new GumDrop();
-        ball = new Ball(context);
-
+        //ball = new Ball(context);
+        map1 = new Map(1000, 1600, 4, context);
+        currentMap = map1;
+        map2 = new Map(1000, 1600, 6, context);
     }
 
     // Draw method that loops infinitely
@@ -26,8 +29,9 @@ public class GameManager extends View {
 
         bgrnd.setBounds(0,0,canvas.getWidth(),canvas.getHeight());
         bgrnd.draw(canvas);
-        ball.render(canvas);
-        gumDrop.render(canvas);
+
+        // rendering the map, which will in turn render the ball and planets
+        map1.render(canvas);
 
         invalidate();
     }
