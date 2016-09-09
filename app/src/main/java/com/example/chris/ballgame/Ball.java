@@ -11,24 +11,22 @@ import android.hardware.SensorManager;
 
 public class Ball implements SensorEventListener {
 
-    float x = 250, y = 300, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, ball_size = 35;
-    private int width = 0, height = 0;
+    float x = 750, y = 1500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, ball_size = 35;
+    private int width, height;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     Paint paint = new Paint();
-    int blue = Color.GREEN;
+    int green = Color.GREEN;
 
-    public Ball(Context context) {
+    public Ball(Context context, int mapSizeX, int mapSizeY) {
         mSensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_GAME);
+        this.width = mapSizeX;
+        this.height = mapSizeY;
     }
 
-    public void render(Canvas canvas) {
-
-        paint.setColor(blue);
-        width = canvas.getWidth();
-        height = canvas.getHeight();
+    public void update() {
 
         if (x < ball_size/2){
             x = ball_size/2;
@@ -67,7 +65,12 @@ public class Ball implements SensorEventListener {
             v0y = vy;
         }
 
-        canvas.drawCircle(x, y, ball_size, paint);
+    }
+
+    // Method to draw the ball
+    public void render(Canvas canvas, float offsetX, float offsetY) {
+        paint.setColor(green);
+        canvas.drawCircle(x - offsetX, y - offsetY, 30, paint);
     }
 
     @Override
@@ -78,5 +81,12 @@ public class Ball implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+    public float getX() {
+        return x;
+    }
+    public float getY() {
+        return y;
     }
 }

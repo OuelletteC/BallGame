@@ -8,7 +8,7 @@ public class Planet {
     private int radius;
     private int x, y;
     private int color;
-    Paint paint;
+    private Paint paint;
 
     public Planet(int radius, int x, int y, int color) {
         this.radius = radius;
@@ -18,9 +18,9 @@ public class Planet {
         paint = new Paint();
     }
 
-    public void render(Canvas canvas) {
+    public void render(Canvas canvas, float offsetX, float offsetY) {
         paint.setColor(this.color);
-        canvas.drawCircle(x, y, radius, paint);
+        canvas.drawCircle(x - offsetX, y - offsetY, radius, paint);
     }
 
     public int getX() {
@@ -28,6 +28,9 @@ public class Planet {
     }
     public int getY() {
         return this.y;
+    }
+    public int getRadius() {
+        return this.radius;
     }
 
 }
