@@ -13,25 +13,29 @@ public class Camera {
     public float getCamX(float playerX, float screenSizeX) {
         camX = playerX - (screenSizeX / 2);
         offsetMaxX = worldSizeX - screenSizeX;
-
+        return camX;
+        /*
         if (camX > offsetMaxX)
             return offsetMaxX;
         else if (camX < offsetMinX)
             return offsetMinX;
         else
             return camX;
+            */
     }
 
     public float getCamY(float playerY, float screenSizeY) {
         camY = playerY - (screenSizeY / 2);
         offsetMaxY = worldSizeY - screenSizeY;
-
+        return camY;
+        /*
         if (camY > offsetMaxY)
             return offsetMaxY;
         else if (camY < offsetMinY)
             return offsetMinY;
         else
             return camY;
+            */
     }
 
 }

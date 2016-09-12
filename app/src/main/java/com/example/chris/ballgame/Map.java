@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 
 public class Map {
 
@@ -16,6 +18,7 @@ public class Map {
     Paint paint;
     int blue = Color.BLUE;
     int red = Color.RED;
+    Drawable background;
 
     public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, Context context) {
 
@@ -24,6 +27,7 @@ public class Map {
         ball = new Ball(context, mapSizeX, mapSizeY);
         camera = new Camera(mapSizeX, mapSizeY);
         paint = new Paint();
+        background = ResourcesCompat.getDrawable(context.getResources(), R.drawable.background, null);
 
         // Made the planet location random
         for (int i = 0; i < numberOfPlanets; i++) {
@@ -40,6 +44,9 @@ public class Map {
         // Updating camera offset
         offsetX = camera.getCamX(ball.getX(), canvas.getWidth());
         offsetY = camera.getCamY(ball.getY(), canvas.getHeight());
+
+        background.setBounds(0,0,canvas.getWidth(), canvas.getHeight());
+        background.draw(canvas);
 
         // Drawing the planets
         for (int i = 0; i < numberOfPlanets; i++) {

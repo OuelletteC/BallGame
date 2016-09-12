@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.graphics.drawable.Drawable;
 
@@ -24,11 +25,6 @@ public class GameManager extends View {
     // Draw method that loops infinitely
     @Override
     public void onDraw(Canvas canvas) {
-
-        // Sets bounds of background and draws it
-        bgrnd.setBounds(0,0,canvas.getWidth(),canvas.getHeight());
-        //bgrnd.setBounds(0, 0, 15000, 3000);
-        bgrnd.draw(canvas);
 
         // rendering the map, which will in turn render the ball and planets
         map1.render(canvas);
