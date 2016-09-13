@@ -51,7 +51,7 @@ public class Map {
         offsetX = camera.getCamX(ball.getX(), canvas.getWidth());
         offsetY = camera.getCamY(ball.getY(), canvas.getHeight());
 
-        background.setBounds(0*mapSizeX - (int)offsetX, 0, 1*mapSizeX - (int)offsetX, canvas.getHeight());
+        background.setBounds(0 - (int)offsetX, 0 - (int)offsetY, 1*mapSizeX - (int)offsetX, 1*mapSizeY - (int)offsetY);
         background.draw(canvas);
 
 
