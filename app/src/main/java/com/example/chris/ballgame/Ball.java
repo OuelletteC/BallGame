@@ -11,46 +11,48 @@ import android.hardware.SensorManager;
 
 public class Ball implements SensorEventListener {
 
-    float x = 750, y = 1500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, ball_size = 35;
+    float x = 750, y = 1500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, radius = 35;
     private int width, height;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     Paint paint = new Paint();
     int green = Color.GREEN;
+    Planet[] planetArray;
 
-    public Ball(Context context, int mapSizeX, int mapSizeY) {
+    public Ball(Context context, int mapSizeX, int mapSizeY, Planet[] planetArray) {
         mSensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_GAME);
         this.width = mapSizeX;
         this.height = mapSizeY;
+        this.planetArray = planetArray;
     }
 
     public void update() {
 
-        if (x < ball_size/2){
-            x = ball_size/2;
+        if (x < radius /2){
+            x = radius /2;
             vy = v0y + accy * time;
             y += ((vy * vy - v0y * v0y) / (2 * accy));
             v0y = vy;
             v0x = 0;
         }
-        else if (x > width-ball_size/2){
-            x = width-ball_size/2;
+        else if (x > width- radius /2){
+            x = width- radius /2;
             vy = v0y + accy * time;
             y += ((vy * vy - v0y * v0y) / (2 * accy));
             v0y = vy;
             v0x = 0;
         }
-        else if (y > height-ball_size/2){
-            y = height-ball_size/2;
+        else if (y > height- radius /2){
+            y = height- radius /2;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
             v0y = 0;
         }
-        else if (y < ball_size/2){
-            y = ball_size/2;
+        else if (y < radius /2){
+            y = radius /2;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
@@ -70,7 +72,7 @@ public class Ball implements SensorEventListener {
     // Method to draw the ball
     public void render(Canvas canvas, float offsetX, float offsetY) {
         paint.setColor(green);
-        canvas.drawCircle(x - offsetX, y - offsetY, 30, paint);
+        canvas.drawCircle(x - offsetX, y - offsetY, radius, paint);
     }
 
     @Override
@@ -81,6 +83,20 @@ public class Ball implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+    public boolean planetCollision(float planetX, float planetY, int planetRadius) {
+
+        float xDistance = x - planetX;
+        float yDistance = y - planetY;
+
+        double hypotenuse = Math.sqrt(xDistance*xDistance + yDistance*yDistance);
+
+        if (hypotenuse > planetRadius + this.radius) {
+            return false;
+        }
+        return true;
+
     }
 
     public float getX() {

@@ -11,28 +11,34 @@ public class Map {
 
     private Ball ball;
     private Planet[] planetArray;
+    private Camera camera;
     private int numberOfPlanets;
     private boolean completed = false;
     private float offsetX, offsetY;
-    private Camera camera;
-    Paint paint;
-    int blue = Color.BLUE;
-    int red = Color.RED;
-    Drawable background;
+    private Paint paint;
+    private int blue = Color.BLUE;
+    private int red = Color.RED;
+    private Drawable background;
+    private int mapSizeX, mapSizeY;
 
     public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, Context context) {
 
         this.numberOfPlanets = numberOfPlanets;
         planetArray = new Planet[numberOfPlanets];
-        ball = new Ball(context, mapSizeX, mapSizeY);
-        camera = new Camera(mapSizeX, mapSizeY);
-        paint = new Paint();
-        background = ResourcesCompat.getDrawable(context.getResources(), R.drawable.background, null);
 
         // Made the planet location random
         for (int i = 0; i < numberOfPlanets; i++) {
             planetArray[i] = new Planet(75, (int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY), red);
         }
+
+        ball = new Ball(context, mapSizeX, mapSizeY, planetArray);
+        camera = new Camera(mapSizeX, mapSizeY);
+        paint = new Paint();
+        background = ResourcesCompat.getDrawable(context.getResources(), R.drawable.background, null);
+        this.mapSizeX = mapSizeX;
+        this.mapSizeY = mapSizeY;
+
+
 
     }
 
@@ -45,8 +51,10 @@ public class Map {
         offsetX = camera.getCamX(ball.getX(), canvas.getWidth());
         offsetY = camera.getCamY(ball.getY(), canvas.getHeight());
 
-        background.setBounds(0,0,canvas.getWidth(), canvas.getHeight());
+        background.setBounds(0*mapSizeX - (int)offsetX, 0, 1*mapSizeX - (int)offsetX, canvas.getHeight());
         background.draw(canvas);
+
+
 
         // Drawing the planets
         for (int i = 0; i < numberOfPlanets; i++) {
