@@ -39,4 +39,5 @@ public class Coin {
     public int getValue() {
         return this.value;
     }
+    public int getSize(){return  this.size;}
 }
