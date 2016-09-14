@@ -10,6 +10,8 @@ import android.support.v4.content.res.ResourcesCompat;
 public class Map {
 
     private Ball ball;
+    private Coin[] coinArray;
+    private int numberOfCoins;
     private Planet[] planetArray;
     private Camera camera;
     private int numberOfPlanets;
@@ -19,16 +21,24 @@ public class Map {
     private int blue = Color.BLUE;
     private int red = Color.RED;
     private Drawable background;
+    private Drawable coinImg;
     private int mapSizeX, mapSizeY;
 
-    public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, Context context) {
+    public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, int numberOfCoins, Context context) {
 
         this.numberOfPlanets = numberOfPlanets;
         planetArray = new Planet[numberOfPlanets];
+        this.numberOfCoins = numberOfCoins;
+        coinArray = new Coin[numberOfCoins];
 
         // Made the planet location random
         for (int i = 0; i < numberOfPlanets; i++) {
             planetArray[i] = new Planet(75, (int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY), red);
+        }
+        // made coin locations random for now
+        coinImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.coin, null);
+        for (int i = 0; i < numberOfCoins; i++) {
+            coinArray[i] = new Coin((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),75, 1);
         }
 
         ball = new Ball(context, mapSizeX, mapSizeY, planetArray);
@@ -60,6 +70,12 @@ public class Map {
         for (int i = 0; i < numberOfPlanets; i++) {
             planetArray[i].render(canvas, offsetX, offsetY);
         }
+        // Drawing the coins
+        for (int i = 0; i < numberOfCoins; i++) {
+
+            coinArray[i].render(canvas, (int)offsetX, (int)offsetY, coinImg);
+        }
+
 
         // Drawing the ball
         ball.render(canvas, offsetX, offsetY);
