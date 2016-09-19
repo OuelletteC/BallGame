@@ -9,24 +9,22 @@ import android.support.v4.content.res.ResourcesCompat;
 /**
  * Created by Mark on 2016-09-13.
  */
-public class Coin {
+public class Heart {
 
     int x;
     int y;
     int size;
-    int value;
-    //private Drawable coinImg;
+    int value =1;
 
-    public Coin(int x, int y, int size, int value){
+    public Heart(int x, int y, int size){
         this.x = x;
         this.y = y;
         this.size = size;
-        this.value = value;
     }
 
-    public void render(Canvas canvas, int offsetX, int offsetY,Drawable coinImg) {
-        coinImg.setBounds(x- offsetX,y-offsetY,x-offsetX+size,y-offsetY+size);
-        coinImg.draw(canvas);
+    public void render(Canvas canvas, int offsetX, int offsetY,Drawable heartImg) {
+        heartImg.setBounds(x- offsetX,y-offsetY,x-offsetX+size,y-offsetY+size);
+        heartImg.draw(canvas);
     }
 
     public int getX() {

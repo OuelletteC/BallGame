@@ -12,16 +12,18 @@ public class Map {
     private Ball ball;
     private Coin[] coinArray;
     private int numberOfCoins;
+    private Heart[] heartArray;
+    private int numberOfHearts;
     private Planet[] planetArray;
     private Camera camera;
     private int numberOfPlanets;
     private boolean completed = false;
     private float offsetX, offsetY;
     private Paint paint;
-    private int blue = Color.BLUE;
     private int red = Color.RED;
     private Drawable background;
     private Drawable coinImg;
+    private Drawable heartImg;
     private int mapSizeX, mapSizeY;
 
     public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, int numberOfCoins, Context context) {
@@ -30,6 +32,8 @@ public class Map {
         planetArray = new Planet[numberOfPlanets];
         this.numberOfCoins = numberOfCoins;
         coinArray = new Coin[numberOfCoins];
+        this.numberOfHearts = numberOfHearts;
+        heartArray = new Heart[numberOfHearts];
 
         // Made the planet location random
         for (int i = 0; i < numberOfPlanets; i++) {
@@ -39,6 +43,10 @@ public class Map {
         coinImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.coin, null);
         for (int i = 0; i < numberOfCoins; i++) {
             coinArray[i] = new Coin((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),75, 1);
+        }
+        heartImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.heart, null);
+        for (int i = 0; i < numberOfHearts; i++) {
+            heartArray[i] = new Heart((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),75);
         }
 
         ball = new Ball(context, mapSizeX, mapSizeY, planetArray);
@@ -72,8 +80,10 @@ public class Map {
         }
         // Drawing the coins
         for (int i = 0; i < numberOfCoins; i++) {
-
             coinArray[i].render(canvas, (int)offsetX, (int)offsetY, coinImg);
+        }
+        for (int i = 0; i < numberOfHearts; i++) {
+            heartArray[i].render(canvas, (int)offsetX, (int)offsetY, heartImg);
         }
 
 
