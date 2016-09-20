@@ -1,16 +1,18 @@
 package com.example.chris.ballgame;
 
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
+import java.util.*;
 
 public class Map {
 
     private Ball ball;
-    private Coin[] coinArray;
+    ArrayList<Coin> coinList = new ArrayList<Coin>();
     private int numberOfCoins;
     private Heart[] heartArray;
     private int numberOfHearts;
@@ -24,14 +26,14 @@ public class Map {
     private Drawable background;
     private Drawable coinImg;
     private Drawable heartImg;
+    private Drawable shipImg;
     private int mapSizeX, mapSizeY;
 
-    public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, int numberOfCoins, Context context) {
+    public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, int numberOfCoins,int numberOfHearts, Context context) {
 
         this.numberOfPlanets = numberOfPlanets;
         planetArray = new Planet[numberOfPlanets];
         this.numberOfCoins = numberOfCoins;
-        coinArray = new Coin[numberOfCoins];
         this.numberOfHearts = numberOfHearts;
         heartArray = new Heart[numberOfHearts];
 
@@ -42,7 +44,7 @@ public class Map {
         // made coin locations random for now
         coinImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.coin, null);
         for (int i = 0; i < numberOfCoins; i++) {
-            coinArray[i] = new Coin((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),75, 1);
+            coinList.add(new Coin((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),75, 1));
         }
         heartImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.heart, null);
         for (int i = 0; i < numberOfHearts; i++) {
@@ -53,6 +55,7 @@ public class Map {
         camera = new Camera(mapSizeX, mapSizeY);
         paint = new Paint();
         background = ResourcesCompat.getDrawable(context.getResources(), R.drawable.background, null);
+        shipImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ship, null);
         this.mapSizeX = mapSizeX;
         this.mapSizeY = mapSizeY;
 
@@ -80,20 +83,41 @@ public class Map {
         }
         // Drawing the coins
         for (int i = 0; i < numberOfCoins; i++) {
-            coinArray[i].render(canvas, (int)offsetX, (int)offsetY, coinImg);
+            coinList.get(i).render(canvas, (int)offsetX, (int)offsetY, coinImg);
+            if (Collision(ball.x,ball.y,(int) ball.radius,coinList.get(i).x+32,coinList.get(i).y+32,(int)ball.radius)){
+                coinList.remove(i);
+                numberOfCoins--;
+            }
+
         }
         for (int i = 0; i < numberOfHearts; i++) {
+
             heartArray[i].render(canvas, (int)offsetX, (int)offsetY, heartImg);
         }
 
 
         // Drawing the ball
-        ball.render(canvas, offsetX, offsetY);
+        ball.render(canvas, (int)offsetX, (int)offsetY,shipImg);
+
 
     }
 
     public boolean complete() {
         return completed;
+    }
+
+    public boolean Collision(float planetX, float planetY, int planetRadius, int ballX, int ballY, int ballRadius) {
+
+        float xDistance = ballX - planetX;
+        float yDistance = ballY - planetY;
+
+        double hypotenuse = Math.sqrt(xDistance*xDistance + yDistance*yDistance);
+
+        if (hypotenuse > (planetRadius + ballRadius)) {
+            return false;
+        }
+        return true;
+
     }
 
 }

@@ -4,15 +4,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.graphics.drawable.Drawable;
 
 public class Ball implements SensorEventListener {
 
     float x = 750, y = 1500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, radius = 35;
-    private int width, height;
+    private int width, height, size = 135;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     Paint paint = new Paint();
@@ -70,9 +72,9 @@ public class Ball implements SensorEventListener {
     }
 
     // Method to draw the ball
-    public void render(Canvas canvas, float offsetX, float offsetY) {
-        paint.setColor(green);
-        canvas.drawCircle(x - offsetX, y - offsetY, radius, paint);
+    public void render(Canvas canvas, int offsetX, int offsetY, Drawable shipImg) {
+        shipImg.setBounds((int)x-offsetX,(int)y-offsetY, (int)x-offsetX+size,(int)y-offsetY+size);
+        shipImg.draw(canvas);
     }
 
     @Override
