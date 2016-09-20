@@ -14,7 +14,7 @@ import android.graphics.drawable.Drawable;
 public class Ball implements SensorEventListener {
 
     float x = 750, y = 1500, v0x = 0, vx = 0, vy = 0, v0y = 0, time = (float).25, accx, accy, radius = 35;
-    private int width, height, size = 135;
+    int width, height, size = 135;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     Paint paint = new Paint();

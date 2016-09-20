@@ -22,7 +22,7 @@ public class Map {
     private boolean completed = false;
     private float offsetX, offsetY;
     private Paint paint;
-    private int red = Color.RED;
+    private int blue = Color.BLUE;
     private Drawable background;
     private Drawable coinImg;
     private Drawable heartImg;
@@ -39,7 +39,7 @@ public class Map {
 
         // Made the planet location random
         for (int i = 0; i < numberOfPlanets; i++) {
-            planetArray[i] = new Planet(75, (int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY), red);
+            planetArray[i] = new Planet(75, (int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY), blue);
         }
         // made coin locations random for now
         coinImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.coin, null);
@@ -84,7 +84,7 @@ public class Map {
         // Drawing the coins
         for (int i = 0; i < numberOfCoins; i++) {
             coinList.get(i).render(canvas, (int)offsetX, (int)offsetY, coinImg);
-            if (Collision(ball.x,ball.y,(int) ball.radius,coinList.get(i).x+32,coinList.get(i).y+32,(int)ball.radius)){
+            if (Collision(ball.x,ball.y,ball.size,coinList.get(i).x,coinList.get(i).y,coinList.get(i).size)){
                 coinList.remove(i);
                 numberOfCoins--;
             }
@@ -106,17 +106,12 @@ public class Map {
         return completed;
     }
 
-    public boolean Collision(float planetX, float planetY, int planetRadius, int ballX, int ballY, int ballRadius) {
+    public boolean Collision(float planetX, float planetY, int planetSize, int shipX, int shipY, int shipSize) {
 
-        float xDistance = ballX - planetX;
-        float yDistance = ballY - planetY;
-
-        double hypotenuse = Math.sqrt(xDistance*xDistance + yDistance*yDistance);
-
-        if (hypotenuse > (planetRadius + ballRadius)) {
-            return false;
+        if ((shipX + shipSize) >= planetX && shipX <= (planetX + planetSize) && (shipY + shipSize) >= planetY && shipY <= (planetY + planetSize)) {
+            return true;
         }
-        return true;
+        return false;
 
     }
 
