@@ -32,29 +32,29 @@ public class Ball implements SensorEventListener {
 
     public void update() {
 
-        if (x < radius /2){
-            x = radius /2;
+        if (x < 0){
+            x = 0;
             vy = v0y + accy * time;
             y += ((vy * vy - v0y * v0y) / (2 * accy));
             v0y = vy;
             v0x = 0;
         }
-        else if (x > width- radius /2){
-            x = width- radius /2;
+        else if (x > width -size){
+            x = width-size;
             vy = v0y + accy * time;
             y += ((vy * vy - v0y * v0y) / (2 * accy));
             v0y = vy;
             v0x = 0;
         }
-        else if (y > height- radius /2){
-            y = height- radius /2;
+        else if (y > height){
+            y = height;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
             v0y = 0;
         }
-        else if (y < radius /2){
-            y = radius /2;
+        else if (y < size){
+            y = size;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
