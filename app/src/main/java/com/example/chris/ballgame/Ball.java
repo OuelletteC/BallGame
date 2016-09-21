@@ -39,22 +39,22 @@ public class Ball implements SensorEventListener {
             v0y = vy;
             v0x = 0;
         }
-        else if (x > width -size){
+        else if (x > (width -size)){
             x = width-size;
             vy = v0y + accy * time;
             y += ((vy * vy - v0y * v0y) / (2 * accy));
             v0y = vy;
             v0x = 0;
         }
-        else if (y > height){
-            y = height;
+        else if (y > height -size){
+            y = height -size;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
             v0y = 0;
         }
-        else if (y < size){
-            y = size;
+        else if (y < 0){
+            y = 0;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
@@ -107,4 +107,5 @@ public class Ball implements SensorEventListener {
     public float getY() {
         return y;
     }
+    public int getSize() {return size;}
 }
