@@ -108,7 +108,7 @@ public class Map {
 
     public boolean Collision(float planetX, float planetY, int planetSize, int shipX, int shipY, int shipSize) {
 
-        if ((shipX + shipSize) >= planetX && shipX <= (planetX + planetSize) && (shipY + shipSize) >= planetY && shipY <= (planetY + planetSize)) {
+        if ((shipX + shipSize-20) >= planetX && shipX <= (planetX + planetSize-20) && (shipY + shipSize-20) >= planetY && shipY <= (planetY + planetSize-20)) {
             return true;
         }
         return false;
