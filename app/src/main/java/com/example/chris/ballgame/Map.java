@@ -12,22 +12,27 @@ import java.util.*;
 public class Map {
 
     private Ball ball;
+
     ArrayList<Coin> coinList = new ArrayList<Coin>();
     private int numberOfCoins;
+
     private Heart[] heartArray;
     private int numberOfHearts;
+
     private Planet[] planetArray;
-    private Camera camera;
     private int numberOfPlanets;
+
+    private Camera camera;
+    private int mapSizeX, mapSizeY;
     private boolean completed = false;
     private float offsetX, offsetY;
-    private Paint paint;
-    private int blue = Color.BLUE;
+
+    private Drawable planetImg;
     private Drawable background;
     private Drawable coinImg;
     private Drawable heartImg;
     private Drawable shipImg;
-    private int mapSizeX, mapSizeY;
+
 
     public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, int numberOfCoins,int numberOfHearts, Context context) {
 
@@ -38,22 +43,22 @@ public class Map {
         heartArray = new Heart[numberOfHearts];
 
         // Made the planet location random
+        planetImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.planet1, null);
         for (int i = 0; i < numberOfPlanets; i++) {
-            planetArray[i] = new Planet(75, (int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY), blue);
+            planetArray[i] = new Planet((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),200);
         }
         // made coin locations random for now
         coinImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.coin, null);
         for (int i = 0; i < numberOfCoins; i++) {
-            coinList.add(new Coin((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),75, 1));
+            coinList.add(new Coin((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),60, 1));
         }
         heartImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.heart, null);
         for (int i = 0; i < numberOfHearts; i++) {
-            heartArray[i] = new Heart((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),75);
+            heartArray[i] = new Heart((int)(Math.random()*mapSizeX), (int)(Math.random()*mapSizeY),65);
         }
 
         ball = new Ball(context, mapSizeX, mapSizeY, planetArray);
         camera = new Camera(mapSizeX, mapSizeY);
-        paint = new Paint();
         background = ResourcesCompat.getDrawable(context.getResources(), R.drawable.background, null);
         shipImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ship, null);
         this.mapSizeX = mapSizeX;
@@ -76,15 +81,17 @@ public class Map {
         background.draw(canvas);
 
 
-
         // Drawing the planets
         for (int i = 0; i < numberOfPlanets; i++) {
-            planetArray[i].render(canvas, offsetX, offsetY);
+            planetArray[i].render(canvas, (int)offsetX, (int)offsetY, planetImg);
+            if (Collision(ball.getX(),ball.getY(),ball.getSize(),planetArray[i].getX(),planetArray[i].getY(),planetArray[i].getSize())){
+
+            }
         }
         // Drawing the coins
         for (int i = 0; i < numberOfCoins; i++) {
             coinList.get(i).render(canvas, (int)offsetX, (int)offsetY, coinImg);
-            if (Collision(ball.x,ball.y,ball.size,coinList.get(i).x,coinList.get(i).y,coinList.get(i).size)){
+            if (Collision(ball.getX(),ball.getY(),ball.getSize(),coinList.get(i).x,coinList.get(i).y,coinList.get(i).size)){
                 coinList.remove(i);
                 numberOfCoins--;
             }
@@ -95,10 +102,8 @@ public class Map {
             heartArray[i].render(canvas, (int)offsetX, (int)offsetY, heartImg);
         }
 
-
         // Drawing the ball
         ball.render(canvas, (int)offsetX, (int)offsetY,shipImg);
-
 
     }
 

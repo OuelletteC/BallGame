@@ -1,27 +1,23 @@
 package com.example.chris.ballgame;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
 
 public class Planet {
 
-    private int radius;
+    private int size;
     private int x, y;
-    private int color;
-    private Paint paint;
 
-    public Planet(int radius, int x, int y, int color) {
-        this.radius = radius;
+    public Planet(int x, int y, int size) {
+        this.size = size;
         this.x = x;
         this.y = y;
-        this.color = color;
-        paint = new Paint();
     }
 
-    public void render(Canvas canvas, float offsetX, float offsetY) {
-        paint.setColor(this.color);
-        canvas.drawCircle(x - offsetX, y - offsetY, radius, paint);
+    public void render(Canvas canvas, int offsetX, int offsetY, Drawable planetImg) {
+        planetImg.setBounds(x- offsetX,y-offsetY,x-offsetX+size,y-offsetY+size);
+        planetImg.draw(canvas);
     }
 
     public int getX() {
@@ -30,8 +26,7 @@ public class Planet {
     public int getY() {
         return this.y;
     }
-    public int getRadius() {
-        return this.radius;
-    }
+    public int getSize(){return this.size;}
+
 
 }
