@@ -9,10 +9,8 @@ import android.support.v4.content.res.ResourcesCompat;
  */
 public class Coin {
 
-    int x;
-    int y;
-    int size;
-    int value;
+    private int x,y,size,value;
+
     //private Drawable coinImg;
 
     public Coin(int x, int y, int size, int value){

@@ -24,7 +24,7 @@ public class GameManager extends SurfaceView {
         //holder = getHolder();
         //holder.addCallback(this);
 
-        map1 = new Map(15000, 3000, 150,55,15,context);
+        map1 = new Map(15000, 3000, 150,55,15,30,context);
         currentMap = map1;
 
         setWillNotDraw(false);

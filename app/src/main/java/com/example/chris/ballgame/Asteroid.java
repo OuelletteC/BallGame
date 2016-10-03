@@ -12,7 +12,7 @@ public class Asteroid {
     public Asteroid(int x, int y,int vx,int vy, int size) {
         this.size = size;
         this.vx =vx;
-        this.vy=vy;
+        this.vy= vy;
         this.x = x;
         this.y = y;
     }
@@ -29,6 +29,15 @@ public class Asteroid {
         return this.y;
     }
     public int getSize(){return this.size;}
+    public int getVx(){return this.vx;}
+    public int getVy(){return this.vy;}
+    public void setX(int x){
+        this.x = x;
+    }
+    public void setY(int y){
+        this.y = y;
+    }
+
 
 
 }
