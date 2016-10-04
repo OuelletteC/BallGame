@@ -6,10 +6,11 @@ import android.graphics.drawable.Drawable;
 
 public class Asteroid {
 
-    private int size,x,y,vx,vy;
+    private float x,y,vx,vy;
+    private int size;
 
 
-    public Asteroid(int x, int y,int vx,int vy, int size) {
+    public Asteroid(float x, float y,float vx,float vy, int size) {
         this.size = size;
         this.vx =vx;
         this.vy= vy;
@@ -17,24 +18,25 @@ public class Asteroid {
         this.y = y;
     }
 
-    public void render(Canvas canvas, int offsetX, int offsetY, Drawable asteroidImg) {
-        asteroidImg.setBounds(x- offsetX,y-offsetY,x-offsetX+size,y-offsetY+size);
+    public void render(Canvas canvas, float offsetX, float offsetY, Drawable asteroidImg) {
+        asteroidImg.setBounds((int)(x-offsetX),(int)(y-offsetY),(int)(x-offsetX+size),(int)(y-offsetY+size));
         asteroidImg.draw(canvas);
     }
 
-    public int getX() {
+    public float getX() {
         return this.x;
     }
-    public int getY() {
+    public float getY() {
         return this.y;
     }
     public int getSize(){return this.size;}
-    public int getVx(){return this.vx;}
-    public int getVy(){return this.vy;}
-    public void setX(int x){
+    public float getVx(){return this.vx;}
+    public float getVy(){return this.vy;}
+
+    public void setX(float x){
         this.x = x;
     }
-    public void setY(int y){
+    public void setY(float y){
         this.y = y;
     }
 

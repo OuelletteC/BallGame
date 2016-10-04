@@ -17,8 +17,6 @@ public class Ball implements SensorEventListener {
     private int width, height, size = 100;
     private SensorManager mSensorManager;
     private Sensor mSensor;
-    Paint paint = new Paint();
-    int green = Color.GREEN;
     Planet[] planetArray;
 
     public Ball(Context context, int mapSizeX, int mapSizeY, Planet[] planetArray) {
@@ -37,28 +35,28 @@ public class Ball implements SensorEventListener {
             vy = v0y + accy * time;
             y += ((vy * vy - v0y * v0y) / (2 * accy));
             v0y = vy;
-            v0x = 0;
+            v0x = (float)-0.5*v0x;
         }
         else if (x > (width -size)){
             x = width-size;
             vy = v0y + accy * time;
             y += ((vy * vy - v0y * v0y) / (2 * accy));
             v0y = vy;
-            v0x = 0;
+            v0x = (float)-0.5*v0x;
         }
         else if (y > height -size){
             y = height -size;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
-            v0y = 0;
+            v0y = (float)-0.5*v0y;
         }
         else if (y < 0){
             y = 0;
             vx = v0x + accx * time;
             x -= ((vx * vx - v0x * v0x) / (2 * accx));
             v0x = vx;
-            v0y = 0;
+            v0y = (float)-0.5*v0y;
         }
         else {
             vx = v0x + accx * time;
@@ -108,4 +106,13 @@ public class Ball implements SensorEventListener {
         return y;
     }
     public int getSize() {return size;}
+    public float getVx() {return vx;}
+    public float getVy() {return vy;}
+    public float getV0x() {return v0x;}
+    public float getV0y() {return v0y;}
+
+    public void setVx(float vx){this.vx = vx;};
+    public void setVy(float vy){this.vy = vy;};
+    public void setV0x(float v0x){this.v0x = v0x;};
+    public void setV0y(float v0y){this.v0y = v0y;};
 }

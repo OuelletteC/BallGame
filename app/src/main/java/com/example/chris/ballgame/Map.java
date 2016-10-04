@@ -3,8 +3,6 @@ package com.example.chris.ballgame;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import java.util.*;
@@ -53,10 +51,12 @@ public class Map {
             planetArray[i] = new Planet((int)(Math.random()*(mapSizeX-200)), (int)(Math.random()*(mapSizeY-200)),200);
         }
 
+
         asteroidImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.asteroid2, null);
         for (int i = 0; i < numberOfAsteroids; i++) {
             asteroidList.add(new Asteroid((int)(Math.random()*(mapSizeX-60)), (int)(Math.random()*(mapSizeY-60)),10,10,60));
         }
+
         // made coin locations random for now
         coinImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.coin, null);
         for (int i = 0; i < numberOfCoins; i++) {
@@ -64,10 +64,16 @@ public class Map {
             // prevents coins from being in the same location as planets
             inner:
             for (int j=0;j<numberOfPlanets;j++){
-            if (Collision(coinList.get(i).getX(),coinList.get(i).getY(),coinList.get(i).getSize(),planetArray[j].getX(),planetArray[j].getY(),planetArray[j].getSize())){
-                coinList.remove(i);
-                i--;
-                break inner;}
+
+                if (CircleCollision(planetArray[i].getX()+planetArray[i].getSize()/2,
+                planetArray[i].getY()+planetArray[i].getSize()/2,
+                planetArray[i].getSize()/2,coinList.get(i).getX()+coinList.get(i).getSize()/2,
+                coinList.get(i).getY()+coinList.get(i).getSize()/2,
+                coinList.get(i).getSize()/2)) {
+
+                    coinList.remove(i);
+                    i--;
+                    break inner;}
             }
         }
 
@@ -76,8 +82,14 @@ public class Map {
             heartList.add(new Heart((int)(Math.random()*(mapSizeX-65)), (int)(Math.random()*(mapSizeY-65)),65));
             //prevents hearts from being in the same location as planetsr
             inner2:
-            for (int j=0;j<numberOfPlanets;j++){
-                if (Collision(heartList.get(i).getX(),heartList.get(i).getY(),heartList.get(i).getSize(),planetArray[j].getX(),planetArray[j].getY(),planetArray[j].getSize())){
+            for (int j = 0;j<numberOfPlanets;j++){
+
+                if (CircleCollision(planetArray[i].getX()+planetArray[i].getSize()/2,
+                planetArray[i].getY()+planetArray[i].getSize()/2,
+                planetArray[i].getSize()/2,heartList.get(i).getX()+heartList.get(i).getSize()/2,
+                heartList.get(i).getY()+heartList.get(i).getSize()/2,
+                heartList.get(i).getSize()/2)) {
+
                     heartList.remove(i);
                     i--;
                     break inner2;}
@@ -112,26 +124,61 @@ public class Map {
         // Drawing the planets
         for (int i = 0; i < numberOfPlanets; i++) {
 
-            planetArray[i].render(canvas, (int)offsetX, (int)offsetY, planetImg);
-            if (Collision(ball.getX(),ball.getY(),ball.getSize(),planetArray[i].getX(),planetArray[i].getY(),planetArray[i].getSize())){
+            if (onScreen(offsetX,offsetY,canvas.getWidth(),canvas.getHeight(),
+
+                    planetArray[i].getX(),planetArray[i].getY(),planetArray[i].getSize(),planetArray[i].getSize())) {
+                    planetArray[i].render(canvas, (int) offsetX, (int) offsetY, planetImg);
+
+                    if (CircleCollision(planetArray[i].getX()+planetArray[i].getSize()/2,
+                    planetArray[i].getY()+planetArray[i].getSize()/2,
+                    planetArray[i].getSize()/2, ball.getX()+ball.getSize()/2 ,
+                    ball.getY()+ball.getSize()/2,ball.getSize()/2)) {
+
+                        ball.setV0x(-ball.getV0x());
+                        ball.setV0y(-ball.getV0y());
+                    }
             }
         }
+
         // Drawing the coins
         for (int i = 0; i < numberOfCoins; i++) {
-            coinList.get(i).render(canvas, (int)offsetX, (int)offsetY, coinImg);
-            if (Collision(ball.getX(),ball.getY(),ball.getSize(),coinList.get(i).getX(),coinList.get(i).getY(),coinList.get(i).getSize())){
-                coinList.remove(i);
-                numberOfCoins--;
-            }
+            // checks if object is on screen before rendering and colision detecting
+            if (onScreen(offsetX,offsetY,canvas.getWidth(),canvas.getHeight(),
+                    coinList.get(i).getX(),coinList.get(i).getY(),coinList.get(i).getSize(),coinList.get(i).getSize())) {
 
-        }
-        for (int i = 0; i < numberOfHearts; i++) {
-            heartList.get(i).render(canvas, (int)offsetX, (int)offsetY, heartImg);
-            if (Collision(ball.getX(),ball.getY(),ball.getSize(),heartList.get(i).x,heartList.get(i).y,heartList.get(i).size)){
-                heartList.remove(i);
-                numberOfHearts--;
+                coinList.get(i).render(canvas, (int) offsetX, (int) offsetY, coinImg);
+
+                if (CircleCollision(ball.getX()+ball.getSize()/2 ,
+                ball.getY()+ball.getSize()/2,ball.getSize()/2,
+                coinList.get(i).getX()+coinList.get(i).getSize()/2,
+                coinList.get(i).getY()+coinList.get(i).getSize()/2,
+                coinList.get(i).getSize()/2)) {
+
+                    coinList.remove(i);
+                    numberOfCoins--;
+                }
             }
         }
+
+        for (int i = 0; i < numberOfHearts; i++) {
+            if (onScreen(offsetX,offsetY,canvas.getWidth(),canvas.getHeight(),
+                    heartList.get(i).getX(),heartList.get(i).getY(),heartList.get(i).getSize(),heartList.get(i).getSize())) {
+
+                heartList.get(i).render(canvas, (int) offsetX, (int) offsetY, heartImg);
+                if (CircleCollision(ball.getX()+ball.getSize()/2 ,
+                        ball.getY()+ball.getSize()/2,ball.getSize()/2,
+                        heartList.get(i).getX()+heartList.get(i).getSize()/2,
+                        heartList.get(i).getY()+heartList.get(i).getSize()/2,
+                        heartList.get(i).getSize()/2)){
+
+                    heartList.remove(i);
+                    numberOfHearts--;
+                }
+
+            }
+        }
+
+        //rendering randomly rn
         for (int i = 0; i < numberOfAsteroids; i++) {
             asteroidList.get(i).render(canvas, (int)offsetX, (int)offsetY,asteroidImg);
             asteroidList.get(i).setX(asteroidList.get(i).getX()+asteroidList.get(i).getVx());
@@ -146,21 +193,32 @@ public class Map {
         return completed;
     }
 
-    public boolean Collision(float planetX, float planetY, int planetSize, int shipX, int shipY, int shipSize) {
+    public boolean CircleCollision(float x1, float y1, float r1, float x2,float y2, float r2) {
 
-        if ((shipX + shipSize-20) >= planetX && shipX <= (planetX + planetSize-20) && (shipY + shipSize-20) >= planetY && shipY <= (planetY + planetSize-20)) {
+        float xDistance = x2 - x1;
+        float yDistance = y2 - y1;
+
+        double hypotenuse = Math.sqrt(xDistance*xDistance + yDistance*yDistance);
+
+        if (hypotenuse > (r1+r2)) {
+            return false;
+        }
+        return true;
+
+    }
+
+    public float CircleCollisionUpdate(){return (float)1;}
+
+    //checks if an objects location is on the on the screen
+    public boolean onScreen(float screenX, float screenY, int screenWidth, int screenHeight,
+                            int objX, int objY, int objWidth, int objHeight) {
+
+        if ((objX+objWidth) >= screenX && objX <= (screenX + screenWidth) && (objY+objHeight) >= screenY && objY <= (screenY + screenHeight)) {
             return true;
         }
         return false;
 
     }
-    public boolean onScreen(float planetX, float planetY, int planetSize, int shipX, int shipY, int shipSize) {
 
-        if ((shipX + shipSize-20) >= planetX && shipX <= (planetX + planetSize-20) && (shipY + shipSize-20) >= planetY && shipY <= (planetY + planetSize-20)) {
-            return true;
-        }
-        return false;
-
-    }
 
 }
