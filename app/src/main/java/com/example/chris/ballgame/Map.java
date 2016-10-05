@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import java.util.*;
+import android.graphics.Paint;
 
 public class Map {
 
@@ -36,6 +37,11 @@ public class Map {
     private Drawable coinCollected;
     private Drawable asteroidImg;
 
+    //in game text
+    private int numCoinsCollected = 0;
+    private Paint p = new Paint();
+
+
 
     public Map(int mapSizeX, int mapSizeY, int numberOfPlanets, int numberOfCoins,int numberOfHearts,int numberOfAsteroids, Context context) {
 
@@ -54,7 +60,9 @@ public class Map {
 
         asteroidImg = ResourcesCompat.getDrawable(context.getResources(), R.drawable.asteroid2, null);
         for (int i = 0; i < numberOfAsteroids; i++) {
-            asteroidList.add(new Asteroid((int)(Math.random()*(mapSizeX-60)), (int)(Math.random()*(mapSizeY-60)),10,10,60));
+
+            asteroidList.add(new Asteroid((int)(Math.random()*(mapSizeX-60)), (int)(Math.random()*(mapSizeY-60)),
+            (float)Math.random()*10,(float)Math.random()*10,60));
         }
 
         // made coin locations random for now
@@ -65,9 +73,9 @@ public class Map {
             inner:
             for (int j=0;j<numberOfPlanets;j++){
 
-                if (CircleCollision(planetArray[i].getX()+planetArray[i].getSize()/2,
-                planetArray[i].getY()+planetArray[i].getSize()/2,
-                planetArray[i].getSize()/2,coinList.get(i).getX()+coinList.get(i).getSize()/2,
+                if (CircleCollision(planetArray[j].getX()+planetArray[j].getSize()/2,
+                planetArray[j].getY()+planetArray[j].getSize()/2, planetArray[j].getSize()/2,
+                coinList.get(i).getX()+coinList.get(i).getSize()/2,
                 coinList.get(i).getY()+coinList.get(i).getSize()/2,
                 coinList.get(i).getSize()/2)) {
 
@@ -84,9 +92,9 @@ public class Map {
             inner2:
             for (int j = 0;j<numberOfPlanets;j++){
 
-                if (CircleCollision(planetArray[i].getX()+planetArray[i].getSize()/2,
-                planetArray[i].getY()+planetArray[i].getSize()/2,
-                planetArray[i].getSize()/2,heartList.get(i).getX()+heartList.get(i).getSize()/2,
+                if (CircleCollision(planetArray[j].getX()+planetArray[j].getSize()/2,
+                planetArray[j].getY()+planetArray[j].getSize()/2,
+                planetArray[j].getSize()/2,heartList.get(i).getX()+heartList.get(i).getSize()/2,
                 heartList.get(i).getY()+heartList.get(i).getSize()/2,
                 heartList.get(i).getSize()/2)) {
 
@@ -104,6 +112,8 @@ public class Map {
         this.mapSizeX = mapSizeX;
         this.mapSizeY = mapSizeY;
 
+        p.setTextSize(25);
+        p.setColor(context.getResources().getColor(android.R.color.holo_green_light));
 
 
     }
@@ -156,6 +166,7 @@ public class Map {
 
                     coinList.remove(i);
                     numberOfCoins--;
+                    numCoinsCollected += 1;
                 }
             }
         }
@@ -181,11 +192,15 @@ public class Map {
         //rendering randomly rn
         for (int i = 0; i < numberOfAsteroids; i++) {
             asteroidList.get(i).render(canvas, (int)offsetX, (int)offsetY,asteroidImg);
-            asteroidList.get(i).setX(asteroidList.get(i).getX()+asteroidList.get(i).getVx());
+            asteroidList.get(i).update();
         }
 
         // Drawing the ball
         ball.render(canvas, (int)offsetX, (int)offsetY,shipImg);
+
+        //display stats
+        canvas.drawText("Coins Collected: "+numCoinsCollected,ball.getX()-offsetX-canvas.getWidth()/2+ball.getSize()/2
+                ,ball.getY()-offsetY-canvas.getHeight()/2+ball.getSize(),p);
 
     }
 
